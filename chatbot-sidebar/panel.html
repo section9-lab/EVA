@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能助手 | AI Chat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <div class="bot-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="header-info">
+        <h1>AI 助手</h1>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span>在线</span>
+        </div>
+      </div>
+      <button class="settings-btn">
+        <i class="fas fa-cog"></i>
+      </button>
+    </header>
+
+    <div class="chat-history" id="chat-history">
+      <div class="welcome-message">
+        <p>您好！我是您的智能助手</p>
+        <p>您可以尝试：</p>
+        <ul class="quick-actions">
+          <li>查询实时天气</li>
+          <li>进行数学计算</li>
+          <li>设置提醒事项</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <div class="input-tools">
+        <button class="emoji-btn"><i class="far fa-smile"></i></button>
+        <button class="upload-btn"><i class="fas fa-paperclip"></i></button>
+      </div>
+      <input 
+        type="text" 
+        id="chat-input" 
+        placeholder="输入消息..." 
+        autocomplete="off"
+        aria-label="聊天输入框"
+      >
+      <button id="send-btn" class="send-btn" aria-label="发送消息">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+
+    <div class="typing-indicator">
+      <div class="dot-flashing"></div>
+      <span>AI 正在思考...</span>
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
