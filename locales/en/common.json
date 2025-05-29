@@ -1,0 +1,19 @@
+{
+  "home": "EVA Assistant",
+  "settings": "Settings",
+  "themeSettings": "Theme Settings",
+  "i18nSettings": "Interface Language",
+  "introduce": "Introduce",
+  "description": "EVA is an AI-First browser extension that allows the browser to automate complex compositing tasks with text descriptions.",
+  "reference": "Reference",
+  "inputPlaceholder": "Type a message...",
+  "send": "Send",
+  "modelSettings": "Model Settings",
+  "modelUrl": "URL",
+  "modelKey": "Key",
+  "modelName": "Model",
+  "save": "Save",
+  "test":"test",
+  "testConnectionSuccessShort": "Success", 
+  "testConnectionFailedShort": "Failed"
+}

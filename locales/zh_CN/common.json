@@ -1,0 +1,19 @@
+{
+  "home": "EVA助手",
+  "settings": "设置",
+  "themeSettings": "主题设置",
+  "i18nSettings": "界面语音",
+  "introduce": "简介",
+  "description": "EVA 是一个 AI-First 浏览器扩展程序， 可以通过文字描述让浏览器自动完成复杂的组合任务。",
+  "reference": "参考",
+  "inputPlaceholder": "输入消息...",
+  "send": "发送",
+  "modelSettings": "模型设置",
+  "modelUrl": "URL",
+  "modelKey": "密钥",
+  "modelName": "模型",
+  "save": "保存",
+  "test":"测试",
+  "testConnectionSuccessShort": "Success", 
+  "testConnectionFailedShort": "Failed"
+}
