@@ -3,6 +3,6 @@
     "message": "EVA"
   },
   "extDescription": {
-    "message": "This is a boilerplate and starter for chrome browser extension, built with Wxt、 React、 Tailwind css 、Shadcn ui and Typescript.\nSupport dark mode and localization "
+    "message": "EVA is an AI-First browser extension that allows the browser to automate complex compositing tasks with text descriptions."
   }
 }

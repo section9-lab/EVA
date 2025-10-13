@@ -11,10 +11,10 @@ export function I18nSettings() {
     const {t} = useTranslation();
     return (
         <Card>
-            <div className="space-y-1.5 p-6 pb-3">
+            <div className="space-y-1.5 p-3 pb-3">
                 <h3 className="font-semibold text-left text-base">{t('i18nSettings')}</h3>
             </div>
-            <RadioGroup defaultValue={i18n.language} value={i18n.language} className="p-6 pt-2">
+            <RadioGroup defaultValue={i18n.language} value={i18n.language} className="p-3 pt-2">
                 {
                     languages.map((language, index, array) => {
                         return (

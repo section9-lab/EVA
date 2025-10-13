@@ -1,0 +1,19 @@
+{
+  "name": "eva-playwright-host",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Native messaging host for EVA browser extension with Playwright support",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/ws": "^8.5.0"
+  }
+}

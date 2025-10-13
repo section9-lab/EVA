@@ -3,9 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Default Popup Title</title>
+    <title>EVA - AI Assistant</title>
     <meta name="manifest.type" content="browser_action" />
-    <link href="~/assets/main.css" rel="stylesheet" />
+    <link href="../assets/main.css" rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: transparent;
+        width: 100%;
+        height: 100vh;
+        min-width: 320px;
+        max-width: 800px;
+        overflow: hidden;
+        resize: horizontal;
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

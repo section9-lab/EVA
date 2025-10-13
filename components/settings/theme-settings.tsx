@@ -12,10 +12,10 @@ export function ThemeSettings() {
     const {t} = useTranslation();
     return (
         <Card>
-            <div className="space-y-1.5 p-6 pb-3">
+            <div className="space-y-1.5 p-3 pb-3">
                 <h3 className="font-semibold text-left text-base">{t('themeSettings')}</h3>
             </div>
-            <RadioGroup defaultValue={theme} value={theme} className="p-6 pt-2">
+            <RadioGroup defaultValue={theme} value={theme} className="p-3 pt-2">
                 {
                     themes && themes.map((theme, index, array) => {
                         return (
