@@ -9,11 +9,7 @@ export enum MessageType {
     executeTask = "executeTask",
     taskResult = "taskResult",
     highlightElement = "highlightElement",
-    removeHighlight = "removeHighlight",
-    playwrightAction = "playwrightAction",
-    playwrightResult = "playwrightResult",
-    connectPlaywright = "connectPlaywright",
-    playwrightStatus = "playwrightStatus"
+    removeHighlight = "removeHighlight"
 }
 
 export enum MessageFrom {
@@ -35,8 +31,6 @@ export interface TaskStep {
     value?: string;
     status: 'pending' | 'running' | 'completed' | 'failed';
     result?: any;
-    playwrightAction?: string;
-    playwrightParams?: any;
 }
 
 export interface Task {
@@ -56,29 +50,12 @@ export interface PageAnalysis {
     }>;
 }
 
-export interface PlaywrightAction {
-    id: string;
-    action: string;
-    params?: any;
-    timeout?: number;
-}
-
-export interface PlaywrightResult {
-    id: string;
-    action: string;
-    success: boolean;
-    result?: any;
-    error?: string;
-}
-
 export class ExtMessage {
     content?: string;
     from?: MessageFrom;
     task?: Task;
     pageAnalysis?: PageAnalysis;
     stepResult?: any;
-    playwrightAction?: PlaywrightAction;
-    playwrightResult?: PlaywrightResult;
 
     constructor(messageType: MessageType) {
         this.messageType = messageType;

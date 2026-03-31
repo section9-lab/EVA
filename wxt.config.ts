@@ -12,5 +12,8 @@ export default defineConfig({
     },
     vite: () => ({
         plugins: [react()],
+        build: {
+            chunkSizeWarningLimit: 1000,
+        },
     }),
 });

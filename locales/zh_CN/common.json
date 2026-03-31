@@ -119,45 +119,5 @@
       "select": "选择选项",
       "drag": "拖拽元素"
     }
-  },
-  "settings": {
-    "playwright": {
-      "title": "Playwright 设置",
-      "connected": "已连接到 Playwright Host",
-      "disconnected": "未连接到 Playwright Host",
-      "connect": "连接",
-      "disconnect": "断开连接",
-      "startHost": "启动 Host",
-      "checkStatus": "检查状态",
-      "hostUrl": "Host URL",
-      "hostUrlDescription": "Playwright Host 服务的 WebSocket URL",
-      "autoConnect": "启动时自动连接",
-      "browserSettings": "浏览器设置",
-      "headless": "无头模式运行",
-      "viewportWidth": "视口宽度",
-      "viewportHeight": "视口高度",
-      "saveSettings": "保存设置",
-      "settingsSaved": "设置保存成功",
-      "saveError": "保存设置时出错",
-      "connectionSuccess": "成功连接到 Playwright Host",
-      "connectionFailed": "连接 Playwright Host 失败",
-      "connectionError": "连接错误",
-      "testSuccess": "连接测试成功",
-      "disconnected": "已断开与主机的连接",
-      "startingHost": "正在启动 Playwright Host...",
-      "hostInstructions": "请在项目目录中运行 'npm run playwright-host'",
-      "hostStartError": "启动主机进程时出错",
-      "usageGuide": "使用指南",
-      "guideStep1Title": "安装依赖",
-      "guideStep1Description": "在 playwright-host 目录中运行 'npm install'",
-      "guideStep2Title": "启动 Host 服务",
-      "guideStep2Description": "运行 'npm run playwright-host' 启动 Playwright Host 服务",
-      "guideStep3Title": "配置扩展",
-      "guideStep3Description": "设置主机 URL 和连接偏好",
-      "guideStep4Title": "开始使用",
-      "guideStep4Description": "使用自然语言执行浏览器自动化任务",
-      "proTip": "专业提示",
-      "proTipDescription": "Playwright 允许更复杂的浏览器交互，如截图、文件上传和多标签页操作。"
-    }
   }
 }

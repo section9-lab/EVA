@@ -1,41 +1,40 @@
-import {Label} from "@/components/ui/label"
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
-import {Card} from "@/components/ui/card.tsx";
-import {browser} from "wxt/browser";
-import {MessageType} from "@/entrypoints/types.ts";
-import {useTheme} from "@/components/theme-provider.tsx";
-import {useTranslation} from "react-i18next";
+import { browser } from "wxt/browser"
+import { MessageType } from "@/entrypoints/types.ts"
+import { useTheme } from "@/components/theme-provider.tsx"
+import { Sun, Moon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export function ThemeSettings() {
-    const {theme, toggleTheme} = useTheme();
-    const themes = ["light", "dark"]
-    const {t} = useTranslation();
-    return (
-        <Card>
-            <div className="space-y-1.5 p-3 pb-3">
-                <h3 className="font-semibold text-left text-base">{t('themeSettings')}</h3>
-            </div>
-            <RadioGroup defaultValue={theme} value={theme} className="p-3 pt-2">
-                {
-                    themes && themes.map((theme, index, array) => {
-                        return (
-                            <div key={index} className="flex items-center space-y-1.5 justify-between"
-                                 onClick={async () => {
-                                     toggleTheme(theme)
-                                     await browser.runtime.sendMessage({
-                                         messageType: MessageType.changeTheme,
-                                         content: theme
-                                     });
-                                     await browser.storage.local.set({theme: theme});
-                                 }}>
-                                <Label htmlFor={`r${index}`}>{theme}</Label>
-                                <RadioGroupItem value={theme} id={`r${index}`}/>
-                            </div>
-                        );
-                    })
-                }
-            </RadioGroup>
-        </Card>
+  const { theme, toggleTheme } = useTheme()
 
-    )
+  const themes = [
+    { value: "light", label: "Light", icon: Sun },
+    { value: "dark", label: "Dark", icon: Moon },
+  ]
+
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {themes.map((t) => {
+        const Icon = t.icon
+        const active = theme === t.value
+        return (
+          <button
+            key={t.value}
+            onClick={async () => {
+              toggleTheme(t.value)
+              await browser.runtime.sendMessage({ messageType: MessageType.changeTheme, content: t.value })
+              await browser.storage.local.set({ theme: t.value })
+            }}
+            className={cn(
+              "flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all",
+              active ? "border-foreground bg-foreground/5 text-foreground" : "border-border text-muted-foreground hover:border-foreground/50"
+            )}
+          >
+            <Icon className="h-4 w-4" />
+            {t.label}
+          </button>
+        )
+      })}
+    </div>
+  )
 }

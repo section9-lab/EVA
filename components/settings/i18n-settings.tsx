@@ -1,40 +1,33 @@
-import {Label} from "@/components/ui/label"
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
-import {Card} from "@/components/ui/card.tsx";
-import {browser} from "wxt/browser";
-import {MessageType} from "@/entrypoints/types.ts";
-import languages from "@/components/i18nConfig.ts";
-import {useTranslation} from "react-i18next";
+import { browser } from "wxt/browser"
+import { MessageType } from "@/entrypoints/types.ts"
+import languages from "@/components/i18nConfig.ts"
+import { useTranslation } from "react-i18next"
+import { cn } from "@/lib/utils"
 
 export function I18nSettings() {
-    const {i18n} = useTranslation();
-    const {t} = useTranslation();
-    return (
-        <Card>
-            <div className="space-y-1.5 p-3 pb-3">
-                <h3 className="font-semibold text-left text-base">{t('i18nSettings')}</h3>
-            </div>
-            <RadioGroup defaultValue={i18n.language} value={i18n.language} className="p-3 pt-2">
-                {
-                    languages.map((language, index, array) => {
-                        return (
-                            <div key={index} className="flex items-center space-y-1.5 justify-between"
-                                 onClick={async () => {
-                                     await i18n.changeLanguage(language.locale)
-                                     await browser.runtime.sendMessage({
-                                         messageType: MessageType.changeLocale,
-                                         content: language.locale
-                                     });
-                                     await browser.storage.local.set({i18n: language.locale});
-                                 }}>
-                                <Label htmlFor={`r${index}`}>{language.name}</Label>
-                                <RadioGroupItem value={`${language.locale}`} id={`r${index}`}/>
-                            </div>
-                        )
-                    })
-                }
-            </RadioGroup>
-        </Card>
+  const { i18n } = useTranslation()
 
-    )
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {languages.map((lang) => {
+        const active = i18n.language === lang.locale
+        return (
+          <button
+            key={lang.locale}
+            onClick={async () => {
+              await i18n.changeLanguage(lang.locale)
+              await browser.runtime.sendMessage({ messageType: MessageType.changeLocale, content: lang.locale })
+              await browser.storage.local.set({ i18n: lang.locale })
+            }}
+            className={cn(
+              "rounded-lg border px-3 py-2.5 text-xs font-medium transition-all",
+              active ? "border-foreground bg-foreground/5 text-foreground" : "border-border text-muted-foreground hover:border-foreground/50"
+            )}
+          >
+            {lang.name}
+          </button>
+        )
+      })}
+    </div>
+  )
 }

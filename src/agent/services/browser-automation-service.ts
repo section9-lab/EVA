@@ -18,7 +18,6 @@ export class BrowserAutomationService {
       // 在扩展初始化时设置必要的监听器
       await this.setupMessageListeners();
       this.isInitialized = true;
-    } browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     } catch (error) {
       console.error('Failed to initialize BrowserAutomationService:', error);
     }

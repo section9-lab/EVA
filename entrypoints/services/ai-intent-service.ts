@@ -11,9 +11,8 @@ export class AIIntentService {
     return AIIntentService.instance;
   }
 
-  async analyzeIntent(userMessage: string, pageContext?: PageAnalysis, usePlaywright = false): Promise<Task | null> {
+  async analyzeIntent(userMessage: string, pageContext?: PageAnalysis): Promise<Task | null> {
     try {
-      // 1. 从存储中获取模型配置
       const data = await browser.storage.local.get("modelConfig");
       if (!data.modelConfig) {
         console.error("Model configuration not found");
@@ -26,50 +25,19 @@ export class AIIntentService {
         return null;
       }
 
-      // 2. 检查用户消息是否需要 Playwright
-      const needsPlaywright = usePlaywright || this.detectPlaywrightNeed(userMessage);
-
-      // 3. 构建系统提示词
-      const systemPrompt = this.buildSystemPrompt(pageContext, needsPlaywright);
-
-      // 4. 调用AI进行意图分析和任务分解
+      const systemPrompt = this.buildSystemPrompt(pageContext);
       const response = await this.callAI(userMessage, systemPrompt, config);
-
-      // 5. 解析AI响应并构建任务
-      const task = this.parseTaskFromResponse(response, userMessage, needsPlaywright);
-
-      return task;
+      return this.parseTaskFromResponse(response, userMessage);
     } catch (error) {
       console.error("Error analyzing intent:", error);
       return null;
     }
   }
 
-  private detectPlaywrightNeed(userMessage: string): boolean {
-    const playwrightKeywords = [
-      '截图', 'screenshot',
-      '导航', 'navigate', '打开新页面', 'open new page',
-      '悬停', 'hover',
-      '拖拽', 'drag', '拖动',
-      '选择', 'select option',
-      '上传', 'upload',
-      '下载', 'download',
-      '等待页面', 'wait for page',
-      '执行脚本', 'execute script',
-      '新标签页', 'new tab'
-    ];
-
-    const lowerMessage = userMessage.toLowerCase();
-    return playwrightKeywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()));
-  }
-
-  private buildSystemPrompt(pageContext?: PageAnalysis, usePlaywright = false): string {
+  private buildSystemPrompt(pageContext?: PageAnalysis): string {
     let prompt = `你是EVA助手，一个能够理解用户意图并将其分解为具体操作步骤的AI助手。
 
 你的任务是分析用户的请求，识别他们想要执行的操作，并将这些操作分解为具体的、可执行的步骤。
-
-${usePlaywright ? `
-你现在可以使用 Playwright 进行更强大的浏览器自动化操作。
 
 可用的操作类型：
 1. navigate - 导航到指定URL
@@ -79,42 +47,28 @@ ${usePlaywright ? `
 5. scroll - 滚动页面或到特定元素
 6. wait - 等待元素出现或等待指定时间
 7. extract - 提取元素的文本内容
-8. screenshot - 截取页面或元素截图
+8. screenshot - 截取页面截图
 9. hover - 鼠标悬停在元素上
 10. select - 选择下拉框选项
 11. drag - 拖拽操作
-
-元素定位方式：
-1. css - CSS选择器
-2. text - 根据文本内容查找元素
-3. xpath - XPath表达式
-4. aria-label - 根据aria-label属性查找元素
-5. role - 根据角色查找元素（如 button, link, input）
-
-Playwright 特殊功能：
-- 支持复杂的CSS选择器和XPath
-- 可以等待页面加载和导航完成
-- 支持屏幕截图
-- 可以执行JavaScript代码
-- 支持文件上传和下载
-` : `
-可用的操作类型：
-1. click - 点击页面上的元素
-2. type - 在输入框中输入文本
-3. scroll - 滚动到特定元素
-4. wait - 等待元素出现
-5. extract - 提取元素的文本内容
+12. press - 按键操作
+13. goBack / goForward / refresh - 浏览器导航
 
 元素定位方式：
 1. css - CSS选择器
 2. text - 根据文本内容查找元素
 3. aria-label - 根据aria-label属性查找元素
-`}
+
+浏览器操作特性：
+- 直接在当前页面操作，无需打开新浏览器
+- 支持CSS选择器
+- 可以等待页面加载和导航完成
+- 支持屏幕截图
+- 可以执行JavaScript代码
 
 请以JSON格式响应，包含以下结构：
 {
   "description": "任务的简要描述",
-  "usePlaywright": ${usePlaywright},
   "steps": [
     {
       "action": "操作类型",
@@ -122,11 +76,7 @@ Playwright 特殊功能：
         "type": "定位方式",
         "value": "定位值"
       },
-      "value": "输入的文本（如果需要）"${usePlaywright ? `,
-      "playwrightAction": "对应的 Playwright 操作",
-      "playwrightParams": {
-        "参数名": "参数值"
-      }` : ''}
+      "value": "输入的文本（如果需要）"
     }
   ]
 }`;
@@ -142,7 +92,7 @@ Playwright 特殊功能：
     return prompt;
   }
 
-  private async callAI(userMessage: string, systemPrompt: string, config: any): Promise<string> {
+  private async callAI(userMessage: string, systemPrompt: string, config: { url?: string; key: string; model: string }): Promise<string> {
     const response = await fetch(config.url || 'https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -152,14 +102,8 @@ Playwright 特殊功能：
       body: JSON.stringify({
         model: config.model,
         messages: [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          {
-            role: 'user',
-            content: userMessage
-          }
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userMessage }
         ],
         temperature: 0.3,
         max_tokens: 2000
@@ -174,9 +118,8 @@ Playwright 特殊功能：
     return data.choices[0].message.content;
   }
 
-  private parseTaskFromResponse(response: string, userMessage: string, usePlaywright = false): Task | null {
+  private parseTaskFromResponse(response: string, userMessage: string): Task | null {
     try {
-      // 尝试从响应中提取JSON
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         throw new Error("No JSON found in response");
@@ -199,14 +142,7 @@ Playwright 特殊功能：
           target: step.target,
           value: step.value,
           status: 'pending',
-          playwrightAction: step.playwrightAction,
-          playwrightParams: step.playwrightParams
         }));
-      }
-
-      // 如果任务需要 Playwright，添加一个特殊标记
-      if (usePlaywright || parsedResponse.usePlaywright) {
-        (task as any).usePlaywright = true;
       }
 
       return task;
@@ -216,14 +152,12 @@ Playwright 特殊功能：
     }
   }
 
-  // 智能元素匹配
   async findBestElementMatch(description: string, pageContext: PageAnalysis): Promise<ElementSelector | null> {
     if (!pageContext.interactiveElements.length) {
       return null;
     }
 
     try {
-      // 使用简单的文本匹配算法
       const elements = pageContext.interactiveElements;
       const keywords = description.toLowerCase().split(/\s+/);
 
@@ -234,23 +168,15 @@ Playwright 特殊功能：
         let score = 0;
         const elementText = element.text.toLowerCase();
 
-        // 计算匹配分数
         keywords.forEach(keyword => {
           if (elementText.includes(keyword)) {
             score += 1;
           }
         });
 
-        // 如果元素类型匹配描述中的关键词，增加分数
-        if (description.toLowerCase().includes('button') && element.type === 'button') {
-          score += 2;
-        }
-        if (description.toLowerCase().includes('link') && element.type === 'a') {
-          score += 2;
-        }
-        if (description.toLowerCase().includes('input') && (element.type === 'input' || element.type === 'textarea')) {
-          score += 2;
-        }
+        if (description.toLowerCase().includes('button') && element.type === 'button') score += 2;
+        if (description.toLowerCase().includes('link') && element.type === 'a') score += 2;
+        if (description.toLowerCase().includes('input') && (element.type === 'input' || element.type === 'textarea')) score += 2;
 
         if (score > bestScore) {
           bestScore = score;
@@ -259,10 +185,7 @@ Playwright 特殊功能：
       });
 
       if (bestMatch && bestScore > 0) {
-        return {
-          type: 'css',
-          value: bestMatch.selector
-        };
+        return { type: 'css', value: bestMatch.selector };
       }
 
       return null;
@@ -272,7 +195,6 @@ Playwright 特殊功能：
     }
   }
 
-  // 验证任务的可行性
   async validateTask(task: Task): Promise<{ isValid: boolean; errors: string[] }> {
     const errors: string[] = [];
 
@@ -299,9 +221,6 @@ Playwright 特殊功能：
       }
     }
 
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
+    return { isValid: errors.length === 0, errors };
   }
 }

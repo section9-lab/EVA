@@ -119,45 +119,5 @@
       "select": "Selecting option",
       "drag": "Dragging element"
     }
-  },
-  "settings": {
-    "playwright": {
-      "title": "Playwright Settings",
-      "connected": "Connected to Playwright Host",
-      "disconnected": "Disconnected from Playwright Host",
-      "connect": "Connect",
-      "disconnect": "Disconnect",
-      "startHost": "Start Host",
-      "checkStatus": "Check Status",
-      "hostUrl": "Host URL",
-      "hostUrlDescription": "WebSocket URL for Playwright Host service",
-      "autoConnect": "Auto-connect on startup",
-      "browserSettings": "Browser Settings",
-      "headless": "Run in headless mode",
-      "viewportWidth": "Viewport Width",
-      "viewportHeight": "Viewport Height",
-      "saveSettings": "Save Settings",
-      "settingsSaved": "Settings saved successfully",
-      "saveError": "Error saving settings",
-      "connectionSuccess": "Connected successfully to Playwright Host",
-      "connectionFailed": "Failed to connect to Playwright Host",
-      "connectionError": "Connection error",
-      "testSuccess": "Connection test successful",
-      "disconnected": "Disconnected from host",
-      "startingHost": "Starting Playwright Host...",
-      "hostInstructions": "Please run 'npm run playwright-host' in the project directory",
-      "hostStartError": "Error starting host process",
-      "usageGuide": "Usage Guide",
-      "guideStep1Title": "Install Dependencies",
-      "guideStep1Description": "Run 'npm install' in the playwright-host directory",
-      "guideStep2Title": "Start Host Service",
-      "guideStep2Description": "Run 'npm run playwright-host' to start the Playwright Host service",
-      "guideStep3Title": "Configure Extension",
-      "guideStep3Description": "Set up the host URL and connection preferences",
-      "guideStep4Title": "Start Using",
-      "guideStep4Description": "Use natural language to perform browser automation tasks",
-      "proTip": "Pro Tip",
-      "proTipDescription": "Playwright allows for more complex browser interactions like screenshots, file uploads, and multi-tab operations."
-    }
   }
 }
